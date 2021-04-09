@@ -1,0 +1,44 @@
+import { Model } from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreateArticuloInput } from './dto/create-articulo.input';
+import { UpdateArticuloInput } from './dto/update-articulo.input';
+import { Articulo, ArticuloDocument } from './entities/articulo.entity';
+
+@Injectable()
+export class ArticulosService {
+  constructor(
+    @InjectModel(Articulo.name) private articuloModel: Model<ArticuloDocument>,
+  ) {}
+
+  create(createArticuloInput: CreateArticuloInput) {
+    const createdArticulo = new this.articuloModel(createArticuloInput);
+    return createdArticulo.save();
+  }
+
+  findAll() {
+    return this.articuloModel.find().exec();
+  }
+
+  async findAllByIds(ids: string[]) {
+    const result = await this.articuloModel.find({ _id: { $in: ids } }).exec();
+    return result;
+  }
+
+  findOne(id: string) {
+    return this.articuloModel.findById(id).exec();
+  }
+
+  update(updateArticuloInput: UpdateArticuloInput) {
+    const { id, ...articulo } = updateArticuloInput;
+    return this.articuloModel
+      .findByIdAndUpdate(id, {
+        $set: { ...articulo, updatedAt: new Date() },
+      })
+      .exec();
+  }
+
+  remove(id: string) {
+    return this.articuloModel.deleteOne({ _id: id }).exec();
+  }
+}
