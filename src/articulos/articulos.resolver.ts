@@ -36,4 +36,9 @@ export class ArticulosResolver {
   removeArticulo(@Args('id', { type: () => ID }) id: string) {
     return this.articulosService.remove(id);
   }
+
+  @Mutation(() => Articulo)
+  removeAllArticulos() {
+    return this.articulosService.removeAll();
+  }
 }

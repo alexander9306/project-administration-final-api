@@ -20,9 +20,8 @@ export class ArticulosService {
     return this.articuloModel.find().exec();
   }
 
-  async findAllByIds(ids: string[]) {
-    const result = await this.articuloModel.find({ _id: { $in: ids } }).exec();
-    return result;
+  findAllByIds(ids: string[]) {
+    return this.articuloModel.find({ _id: { $in: ids } }).exec();
   }
 
   findOne(id: string) {
@@ -40,5 +39,9 @@ export class ArticulosService {
 
   remove(id: string) {
     return this.articuloModel.deleteOne({ _id: id }).exec();
+  }
+
+  removeAll() {
+    return this.articuloModel.deleteMany({});
   }
 }
