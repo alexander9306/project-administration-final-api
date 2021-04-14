@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ID, Int } from '@nestjs/graphql';
 import { ArticulosService } from './articulos.service';
 import { Articulo } from './entities/articulo.entity';
 import { CreateArticuloInput } from './dto/create-articulo.input';
@@ -37,7 +37,9 @@ export class ArticulosResolver {
     return this.articulosService.remove(id);
   }
 
-  @Mutation(() => Articulo)
+  @Mutation(() => Int, {
+    description: 'Returns the number of deleted elements',
+  })
   removeAllArticulos() {
     return this.articulosService.removeAll();
   }

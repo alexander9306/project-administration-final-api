@@ -14,7 +14,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
       envFilePath: ['env.development', 'env.production', 'env'],
       validationSchema,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL),
+    MongooseModule.forRoot(process.env.MONGO_URL, { useFindAndModify: false }),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,

@@ -45,7 +45,8 @@ export class ArticulosService {
     return this.articuloModel.deleteOne({ _id: id }).exec();
   }
 
-  removeAll() {
-    return this.articuloModel.deleteMany({});
+  async removeAll() {
+    const res = await this.articuloModel.deleteMany({});
+    return res.deletedCount;
   }
 }
