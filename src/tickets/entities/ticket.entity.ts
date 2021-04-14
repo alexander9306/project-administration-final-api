@@ -12,9 +12,6 @@ export class Ticket {
   @Field(() => ID)
   id: string;
 
-  @Prop()
-  cantidad: number;
-
   @Prop([Detalle])
   detalles: Detalle[];
 

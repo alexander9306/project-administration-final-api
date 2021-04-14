@@ -27,9 +27,13 @@ export class TicketsService {
   update(updateTicketInput: UpdateTicketInput) {
     const { id, ...ticket } = updateTicketInput;
     return this.ticketModel
-      .findByIdAndUpdate(id, {
-        $set: { ...((ticket as unknown) as Ticket), updatedAt: new Date() },
-      })
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { ...((ticket as unknown) as Ticket), updatedAt: new Date() },
+        },
+        { new: true },
+      )
       .exec();
   }
 

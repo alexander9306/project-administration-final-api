@@ -27,9 +27,13 @@ export class UsuariosService {
   update(updateUsuarioInput: UpdateUsuarioInput) {
     const { id, ...usuario } = updateUsuarioInput;
     return this.usuarioModel
-      .findByIdAndUpdate(id, {
-        $set: { ...usuario, updatedAt: new Date() },
-      })
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { ...usuario, updatedAt: new Date() },
+        },
+        { new: true },
+      )
       .exec();
   }
 

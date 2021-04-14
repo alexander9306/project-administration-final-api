@@ -31,9 +31,13 @@ export class ArticulosService {
   update(updateArticuloInput: UpdateArticuloInput) {
     const { id, ...articulo } = updateArticuloInput;
     return this.articuloModel
-      .findByIdAndUpdate(id, {
-        $set: { ...articulo, updatedAt: new Date() },
-      })
+      .findByIdAndUpdate(
+        id,
+        {
+          $set: { ...articulo, updatedAt: new Date() },
+        },
+        { new: true },
+      )
       .exec();
   }
 
