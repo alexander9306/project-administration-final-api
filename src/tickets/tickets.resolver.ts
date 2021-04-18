@@ -12,6 +12,7 @@ import { TicketsService } from './tickets.service';
 import { Ticket } from './entities/ticket.entity';
 import { CreateTicketInput } from './dto/create-ticket.input';
 import { UpdateTicketInput } from './dto/update-ticket.input';
+import { RetirarTicketInput } from './dto/retirar-ticket.input';
 import { ArticulosService } from '../articulos/articulos.service';
 
 @Resolver(() => Ticket)
@@ -47,6 +48,13 @@ export class TicketsResolver {
   }
 
   @Mutation(() => Ticket)
+  retirarTicket(
+    @Args('retirarTicketInput') retirarTicketInput: RetirarTicketInput,
+  ) {
+    return this.ticketsService.retirar(retirarTicketInput);
+  }
+
+  @Mutation(() => Ticket)
   removeTicket(@Args('id', { type: () => ID }) id: string) {
     return this.ticketsService.remove(id);
   }
@@ -58,9 +66,16 @@ export class TicketsResolver {
   }
 
   @ResolveField()
-  detalles(@Parent() ticket: Ticket) {
+  async detalles(@Parent() ticket: Ticket) {
     const { detalles } = ticket;
     const articulos = detalles.map((d) => (d.articulo as unknown) as string);
-    return this.articulosService.findAllByIds(articulos);
+    const res = await this.articulosService.findAllByIds(articulos);
+
+    return detalles.map((detalle) => ({
+      cantidad: detalle.cantidad,
+      articulo: res.find(
+        (ar) => ar.id === ((detalle.articulo as unknown) as string).toString(),
+      ),
+    }));
   }
 }

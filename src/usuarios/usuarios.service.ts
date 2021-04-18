@@ -27,7 +27,7 @@ export class UsuariosService {
 
   async findOneByUsername(username: string) {
     const found = await this.usuarioModel
-      .find({
+      .findOne({
         username,
       })
       .exec();
@@ -62,7 +62,9 @@ export class UsuariosService {
       },
     ];
 
-    return found ?? process.env.MOCK_USERS
+    if (found) return found;
+
+    return process.env.MOCK_USERS
       ? users.find((user) => user.username === username)
       : undefined;
   }
