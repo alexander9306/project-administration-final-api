@@ -7,12 +7,13 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
+import { CurrentUser } from 'src/auth/decorators/user.decorator';
+import { User } from 'src/auth/entities/user.model';
 import { UsuariosService } from '../usuarios/usuarios.service';
 import { TicketsService } from './tickets.service';
 import { Ticket } from './entities/ticket.entity';
 import { CreateTicketInput } from './dto/create-ticket.input';
 import { UpdateTicketInput } from './dto/update-ticket.input';
-import { RetirarTicketInput } from './dto/retirar-ticket.input';
 import { ArticulosService } from '../articulos/articulos.service';
 
 @Resolver(() => Ticket)
@@ -48,10 +49,23 @@ export class TicketsResolver {
   }
 
   @Mutation(() => Ticket)
-  retirarTicket(
-    @Args('retirarTicketInput') retirarTicketInput: RetirarTicketInput,
+  async retirarTicket(
+    @Args('id', { type: () => ID }) id: string,
+    @CurrentUser() user: User,
   ) {
-    return this.ticketsService.retirar(retirarTicketInput);
+    const ticket = await this.ticketsService.retirar({
+      id,
+      usuario: user.userId,
+    });
+
+    await this.articulosService.bulkUpdate(
+      ticket.detalles.map((det) => ({
+        id: (det.articulo as unknown) as string,
+        cantidad: det.cantidad,
+      })),
+    );
+
+    return ticket;
   }
 
   @Mutation(() => Ticket)
