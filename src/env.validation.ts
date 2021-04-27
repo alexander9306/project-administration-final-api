@@ -6,5 +6,4 @@ export const validationSchema = Joi.object({
     .default('development'),
   PORT: Joi.number().default(4000),
   MONGO_URL: Joi.string().default('mongodb://localhost/myapp'),
-  MOCK_USERS: Joi.boolean().default(true),
 });

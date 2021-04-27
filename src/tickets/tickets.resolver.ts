@@ -88,7 +88,7 @@ export class TicketsResolver {
     return detalles.map((detalle) => ({
       cantidad: detalle.cantidad,
       articulo: res.find(
-        (ar) => ar.id === ((detalle.articulo as unknown) as string).toString(),
+        (ar) => ar.id === (detalle.articulo as unknown).toString(),
       ),
     }));
   }

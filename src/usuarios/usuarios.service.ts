@@ -13,7 +13,10 @@ export class UsuariosService {
   ) {}
 
   create(createUsuarioInput: CreateUsuarioInput) {
-    const createdUsuario = new this.usuarioModel(createUsuarioInput);
+    const createdUsuario = new this.usuarioModel({
+      ...createUsuarioInput,
+      username: createUsuarioInput.username.toLowerCase(),
+    });
     return createdUsuario.save();
   }
 
@@ -25,7 +28,8 @@ export class UsuariosService {
     return this.usuarioModel.findById(id).exec();
   }
 
-  async findOneByUsername(username: string) {
+  async findOneByUsername(provideName: string) {
+    const username = provideName.toLowerCase();
     const found = await this.usuarioModel
       .findOne({
         username,
@@ -64,18 +68,22 @@ export class UsuariosService {
 
     if (found) return found;
 
-    return process.env.MOCK_USERS
+    return process.env.NODE_ENV === 'development'
       ? users.find((user) => user.username === username)
       : undefined;
   }
 
   update(updateUsuarioInput: UpdateUsuarioInput) {
-    const { id, ...usuario } = updateUsuarioInput;
+    const { id, username, ...usuario } = updateUsuarioInput;
     return this.usuarioModel
       .findByIdAndUpdate(
         id,
         {
-          $set: { ...usuario, updatedAt: new Date() },
+          $set: {
+            ...usuario,
+            updatedAt: new Date(),
+            username: username ? username.toLowerCase() : undefined,
+          },
         },
         { new: true },
       )
