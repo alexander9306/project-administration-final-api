@@ -14,6 +14,7 @@ import { UsuariosModule } from './usuarios/usuarios.module';
       envFilePath: ['.env.production', '.env', '.env.development'],
       isGlobal: true,
       validationSchema,
+      ignoreEnvFile: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URL, { useFindAndModify: false }),
     GraphQLModule.forRoot({
