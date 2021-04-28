@@ -7,6 +7,7 @@ import { validationSchema } from './env.validation';
 import { ArticulosModule } from './articulos/articulos.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { configuration } from './config/configuration';
 
 @Module({
   imports: [
@@ -14,9 +15,13 @@ import { UsuariosModule } from './usuarios/usuarios.module';
       envFilePath: ['.env.production', '.env', '.env.development'],
       isGlobal: true,
       validationSchema,
-      ignoreEnvFile: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URL, { useFindAndModify: false }),
+    MongooseModule.forRoot(
+      configuration.isProduction()
+        ? configuration.database.uri_prod
+        : configuration.database.uri,
+      { useFindAndModify: false },
+    ),
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
