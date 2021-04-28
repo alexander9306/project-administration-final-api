@@ -4,9 +4,9 @@ import { configuration } from './config/configuration';
 
 async function bootstrap() {
   console.log(`starting the app`);
-  console.log(`App will run on port: ${process.env.PORT}`);
-  console.log(`MONGO is on: ${process.env.MONGO_URL}`);
-  console.log(`the enviroment is on: ${process.env.NODE_ENV}`);
+  console.log(`App will run on port: ${configuration.port}`);
+  console.log(`MONGO is on: ${configuration.database.uri}`);
+  console.log(`the enviroment is on: ${configuration.env}`);
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: '*',
