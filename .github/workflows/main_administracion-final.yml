@@ -34,11 +34,11 @@ jobs:
         PORT: ${{ secrets.PORT }}
         MONGO_URL: ${{ secrets.MONGO_URL }}
 
-    - uses: akhileshns/heroku-deploy@v3.12.12
-      with:
-        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-        heroku_app_name: final-administracion
-        heroku_email: alexander9306@gmail.com
+    # - uses: akhileshns/heroku-deploy@v3.12.12
+    #   with:
+    #     heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+    #     heroku_app_name: final-administracion
+    #     heroku_email: alexander9306@gmail.com
 
     - name: Run Azure webapp deploy action using publish profile credentials
       uses: azure/webapps-deploy@v2
