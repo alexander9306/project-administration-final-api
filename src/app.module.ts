@@ -11,7 +11,8 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['env.development', 'env.production', 'env'],
+      envFilePath: ['.env.production', '.env', '.env.development'],
+      isGlobal: true,
       validationSchema,
     }),
     MongooseModule.forRoot(process.env.MONGO_URL, { useFindAndModify: false }),
