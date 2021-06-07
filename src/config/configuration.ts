@@ -1,8 +1,8 @@
 export const configuration = {
   port: parseInt(process.env.PORT, 10) || 3000,
-  env: process.env.NODE_ENV,
+  env: process.env.NODE_ENV || 'development',
   database: {
-    uri: process.env.MONGO_URL,
+    uri: process.env.MONGO_URL || 'mongodb://localhost/myapp',
     uri_prod:
       process.env.MONGO_URL_PROD ||
       'mongodb+srv://alex2456:rHXzeryKveXdd19G@cluster0.5twkm.mongodb.net/adminDB?retryWrites=true&w=majority',

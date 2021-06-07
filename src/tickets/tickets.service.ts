@@ -13,10 +13,9 @@ export class TicketsService {
     private ticketModel: Model<TicketDocument>, // private articuloModel: Model<ArticuloDocument>,
   ) {}
 
-  async create(createTicketInput: CreateTicketInput) {
-    const { usuario, ...rest } = createTicketInput;
+  async create(createTicketInput: CreateTicketInput, usuario?: string) {
     const createdTicket = new this.ticketModel({
-      ...rest,
+      ...createTicketInput,
       usuario: usuario ? { _id: usuario } : undefined,
     });
     const res = await createdTicket.save();

@@ -27,8 +27,9 @@ export class TicketsResolver {
   @Mutation(() => Ticket)
   createTicket(
     @Args('createTicketInput') createTicketInput: CreateTicketInput,
+    @CurrentUser() user: User,
   ) {
-    return this.ticketsService.create(createTicketInput);
+    return this.ticketsService.create(createTicketInput, user.userId);
   }
 
   @Query(() => [Ticket], { name: 'tickets' })

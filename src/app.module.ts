@@ -17,7 +17,7 @@ import { configuration } from './config/configuration';
       validationSchema,
     }),
     MongooseModule.forRoot(
-      configuration.isProduction()
+      !configuration.isProduction()
         ? configuration.database.uri_prod
         : configuration.database.uri,
       { useFindAndModify: false },
